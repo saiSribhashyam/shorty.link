@@ -6,4 +6,5 @@ public interface LinkService {
 	String addLink(Link l);
 	public List<Link> getUserLinks(int uid);
 	String getOg(String s);
+	byte[] getQrCodeImage(int linkId);
 }

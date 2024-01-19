@@ -6,6 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -169,8 +173,12 @@ public class ClientController {
 
 	    List<Link> userLinks = linksv.getUserLinks(uid);
 
+	    for(Link l:userLinks) {
+	    	System.out.println(l.toString());
+	    }
 	    mv.addObject("userLinks", userLinks);
 	    mv.setViewName("mylinks"); // Create a mylinks.jsp view to display the links
+	    
 
 	    return mv;
 	}
@@ -186,6 +194,20 @@ public class ClientController {
 		}
 		
 	}
+	
+	 @GetMapping("/qr-code/{linkId}")
+	    public ResponseEntity<byte[]> getQrCodeImage(@PathVariable int linkId) {
+	        byte[] qrCodeImage = linksv.getQrCodeImage(linkId);
+	        if (qrCodeImage.length > 0) {
+	            HttpHeaders headers = new HttpHeaders();
+	            headers.setContentType(MediaType.IMAGE_PNG);
+	            return new ResponseEntity<>(qrCodeImage, headers, HttpStatus.OK);
+	        } else {
+	            // Handle case when link with given ID is not found
+	            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	        }
+	    }
+	
 	
 	
 	

@@ -1,6 +1,7 @@
 package com.madCoder.shorty.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,45 @@ public class LinkServiceImpl implements LinkService{
 	@Autowired
 	LinkRepo lr;
 	
+	@Autowired
+	QrSvc qrCodeService;
+	
 	@Override
 	public String addLink(Link l) {
 		// TODO Auto-generated method stub
-		lr.save(l);
-		return "Link Generated Successfully";
-	}
+//		lr.save(l);
+//		return "Link Generated Successfully";
+		 try {
+	            // Generate QR code and store it in the link entity
+	            String qrCodeData = "localhost:8080/" + l.getBack();
+	            byte[] qrCodeImage = qrCodeService.generateQrCode(qrCodeData);
+	            
+	            l.setQrCode(qrCodeImage);
+	            String qrCodeUrl = "/qr-code/" + l.getLid();
+	            l.setQrCodeUrl(qrCodeUrl);
+	            lr.save(l);
+		        return "Link generated successfully.";
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return "Error generating QR code.";
+	        }
+
+	       
+	    }
+	
+	@Override
+    public byte[] getQrCodeImage(int linkId) {
+        Optional<Link> optionalLink = lr.findById(linkId);
+        if (optionalLink.isPresent()) {
+            Link link = optionalLink.get();
+            return link.getQrCode();
+        } else {
+            // Handle case when link with given ID is not found
+            return new byte[0];
+        }
+    }
+
+	
 	
 	@Override
 	public List<Link> getUserLinks(int uid) {

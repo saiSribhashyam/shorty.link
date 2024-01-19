@@ -185,8 +185,8 @@
 
             <!-- QR Code image box -->
              <div style="flex-shrink: 0; margin-left: 20px; border: 1px solid #ddd; padding: 5px; height:100px; margin-top:20px;">
-                <img src="https://www.rankwatch.com/blog/wp-content/uploads/2014/08/WebSearch_link_Building.jpg" alt="not yet generated" style="max-width: 100px; max-height: 100px;">
-            </div>
+             <img src="/qr-code/${link.lid}" alt="QR Code">
+             </div>
             
            <button style="margin-left: 20px; margin-top: 50px; padding: 10px 15px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Edit</button>
         </div>

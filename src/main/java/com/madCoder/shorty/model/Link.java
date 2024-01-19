@@ -1,6 +1,7 @@
 package com.madCoder.shorty.model;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -12,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Lob;
 
 @Entity
 @Table(name="link_table")
@@ -43,6 +45,35 @@ public class Link {
 	@Column(name="created", nullable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date; 
+	
+	 @Lob
+	 @Column(name = "qr_code", columnDefinition = "BLOB")
+	 private byte[] qrCode;
+	 
+	 @Column(name = "qr_code_url")
+	    private String qrCodeUrl;
+
+	public String getQrCodeUrl() {
+		return qrCodeUrl;
+	}
+
+	public void setQrCodeUrl(String qrCodeUrl) {
+		this.qrCodeUrl = qrCodeUrl;
+	}
+
+	public byte[] getQrCode() {
+		return qrCode;
+	}
+
+	@Override
+	public String toString() {
+		return "Link [lid=" + lid + ", uid=" + uid + ", back=" + back + ", og=" + og + ", title=" + title
+				+ ", formattedDate=" + formattedDate + ", date=" + date + ", qrCode=" + Arrays.toString(qrCode) + "]";
+	}
+
+	public void setQrCode(byte[] qrCode) {
+		this.qrCode = qrCode;
+	}
 
 	public String getTitle() {
 		return title;
