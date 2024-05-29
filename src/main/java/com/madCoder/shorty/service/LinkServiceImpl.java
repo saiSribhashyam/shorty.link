@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.madCoder.shorty.model.Link;
@@ -63,6 +64,17 @@ public class LinkServiceImpl implements LinkService{
 	@Override
 	public String getOg(String s) {
 		return lr.getOg(s);
+	}
+	
+	@Override
+	public int delLink(int lid) {
+		System.out.println(lid);
+	    try {
+	        lr.deleteById(lid);
+	        return 200; // Return 200 for successful deletion
+	    }  catch (Exception e) {
+	        return 500; // Return 500 for other errors
+	    }
 	}
 
 }

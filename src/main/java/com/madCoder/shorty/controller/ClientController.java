@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,7 @@ public class ClientController {
 	private LinkService linksv;
 	
 	static int uid; 
+	static boolean islogged=false;
 	
 	@GetMapping("/")
 	public String main() {
@@ -46,12 +48,23 @@ public class ClientController {
 		
 		return mv;
 	}
+	@GetMapping("/logout")
+	public ModelAndView renderlogout() {
+		ModelAndView mv = new ModelAndView();
+		islogged=false;
+		mv.setViewName("login");		
+		return mv;
+	}
 	
 	@GetMapping("/home")
 	public ModelAndView renderHome() {
 		ModelAndView mv = new ModelAndView();
+		if(islogged) {
 		mv.setViewName("home");
-		
+		}
+		else {
+			mv.setViewName("login");
+		}
 		return mv;
 	}
 	
@@ -91,17 +104,18 @@ public class ClientController {
 			u.setMobileno(mobile);
 			
 			feedback=userService.addUser(u);
-			mv.setViewName("success");
-			mv.addObject("message",feedback);
+	        String successMessage = "Registration Successful!";
+	        mv.addObject("successMessage", successMessage);
 		}catch (Exception e) 
 		{
 			feedback = e.getMessage();
 			
-			mv.setViewName("success");
-			mv.addObject("message",feedback);
+			 String successMessage = "Registration Unsuccessful!";
+			 mv.addObject("successMessage", successMessage);
 		}
 		
-		return mv;
+		mv.setViewName("login");
+	    return mv;
 		
 	}
 	
@@ -118,6 +132,7 @@ public class ClientController {
 			session.setAttribute("uid", u.getId());
 			mv.setViewName("home");
 			uid=u.getId();
+			islogged=true;
 			
 		}
 		else
@@ -134,6 +149,7 @@ public class ClientController {
 	public ModelAndView shorten(HttpServletRequest request) {
 	    String fb = null;
 	    ModelAndView mv = new ModelAndView();
+	    if(islogged) {
 	    try {
 	        String backhalf = request.getParameter("backhalf");
 	        String oglink = request.getParameter("oglink");
@@ -163,12 +179,25 @@ public class ClientController {
 	        mv.addObject("message", "Error processing request. Please try again or refresh the page");
 	    }
 	    return mv;
+	    }
+	    else
+	    {
+	    	mv.setViewName("login");
+	    	return mv;
+	    }
 	}
 
 	
 	@GetMapping("/mylinks")
 	public ModelAndView myLinks(HttpSession session) {
+		
+			
 	    ModelAndView mv = new ModelAndView();
+	    if(islogged==false) {
+	    	mv.setViewName("login");
+	    	return mv;
+	    }
+	    else {
 	    int uid = (int) session.getAttribute("uid");
 
 	    List<Link> userLinks = linksv.getUserLinks(uid);
@@ -181,6 +210,7 @@ public class ClientController {
 	    
 
 	    return mv;
+	    }
 	}
 	
 	@GetMapping("/{back:[a-zA-Z0-9]+}")
@@ -207,6 +237,18 @@ public class ClientController {
 	            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	        }
 	    }
+	    
+	    @DeleteMapping("/del/{lid}")
+	    public ResponseEntity<Void> delLinkS(@PathVariable int lid) {
+	    	System.out.println(lid);
+	        int status = linksv.delLink(lid);
+	        if (status == 200) {
+	            return ResponseEntity.ok().build(); // Return 200 OK if deletion was successful
+	        } else {
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Return 500 Internal Server Error for other errors
+	        }
+	    }
+
 	
 	
 	

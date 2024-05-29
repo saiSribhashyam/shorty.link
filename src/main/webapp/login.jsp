@@ -289,6 +289,19 @@
         
     }
     
+     .floating-tab{
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px 30px;
+            border-radius: 5px;
+            z-index: 9999;
+            display: none; /* Initially hidden */
+        }
+    
 </style>
 
 </head>
@@ -366,8 +379,27 @@
         <p class="line-1 anim-typewriter">A Simple Link Shortner Application.</p>
         <br>
     </div>
+    <% if (request.getAttribute("successMessage") != null) { %>
+        <div class="floating-tab" id="success-tab">
+            <%= request.getAttribute("successMessage") %>
+        </div>
+    <% } %>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="../js/test.js"></script>
+    <script>
+        // Function to show the floating tab
+        function showFloatingTab() {
+            var tab = document.getElementById("success-tab");
+            tab.style.display = "block";
+            setTimeout(function() {
+                tab.style.display = "none";
+            }, 5000); // Hide after 5 seconds (adjust as needed)
+        }
+
+        // Call the function after successful registration
+        // For example, after submitting the registration form
+        showFloatingTab(); // Call the function when the page loads or after successful registration
+    </script>
 </body>
 </html>
