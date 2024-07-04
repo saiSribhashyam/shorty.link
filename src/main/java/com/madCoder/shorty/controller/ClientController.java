@@ -3,6 +3,7 @@ package com.madCoder.shorty.controller;
 
 import java.util.Date;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.madCoder.shorty.model.Link;
+import com.madCoder.shorty.model.LinkVisit;
 import com.madCoder.shorty.model.User;
 import com.madCoder.shorty.service.LinkService;
+import com.madCoder.shorty.service.LinkVisitSvc;
 import com.madCoder.shorty.service.UserService;
+import com.madCoder.shorty.service.EmailSvc;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -32,6 +36,12 @@ public class ClientController {
 	
 	@Autowired
 	private LinkService linksv;
+	
+	@Autowired
+	private EmailSvc email;
+	
+//	@Autowired
+//	private LinkVisitSvc linkservice;
 	
 	static int uid; 
 	static boolean islogged=false;
@@ -216,6 +226,8 @@ public class ClientController {
 	@GetMapping("/{back:[a-zA-Z0-9]+}")
 	public String redirectToOg(@PathVariable String back) {
 		String og=linksv.getOg(back);
+		LinkVisit lvist;
+		
 		if (og != null) {
           return "redirect:" + og;
         }
@@ -241,15 +253,22 @@ public class ClientController {
 	    @DeleteMapping("/del/{lid}")
 	    public ResponseEntity<Void> delLinkS(@PathVariable int lid) {
 	    	System.out.println(lid);
+	    	
+	    	if(islogged) {
 	        int status = linksv.delLink(lid);
 	        if (status == 200) {
 	            return ResponseEntity.ok().build(); // Return 200 OK if deletion was successful
 	        } else {
 	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Return 500 Internal Server Error for other errors
 	        }
+	        }
+	    	else {
+	    		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Return 500 Internal Server Error for other errors
+	    	}
 	    }
-
-	
+	    
+	    
+	  
 	
 	
 	

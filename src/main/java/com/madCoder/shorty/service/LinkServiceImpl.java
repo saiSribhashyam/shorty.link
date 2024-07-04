@@ -76,5 +76,11 @@ public class LinkServiceImpl implements LinkService{
 	        return 500; // Return 500 for other errors
 	    }
 	}
+	
+	@Override
+	public void updateLink(Link l) {
+		lr.save(l);
+	}
+	
 
 }

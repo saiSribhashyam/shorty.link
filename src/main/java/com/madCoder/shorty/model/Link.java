@@ -52,6 +52,7 @@ public class Link {
 	 
 	 @Column(name = "qr_code_url")
 	    private String qrCodeUrl;
+	 
 
 	public String getQrCodeUrl() {
 		return qrCodeUrl;
@@ -64,6 +65,7 @@ public class Link {
 	public byte[] getQrCode() {
 		return qrCode;
 	}
+	
 
 	@Override
 	public String toString() {

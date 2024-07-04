@@ -8,4 +8,5 @@ public interface LinkService {
 	String getOg(String s);
 	byte[] getQrCodeImage(int linkId);
 	int delLink(int lid);
+	void updateLink(Link l);
 }

@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHORTY.Link</title>
+    <title>SHORTY | MyLinks</title>
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <style>
         body {
@@ -242,7 +242,7 @@
                             <img src="/qr-code/${link.lid}" alt="QR Code" onclick="showQRCode('${link.lid}')">
                         </div>
 
-                        <button style="margin-left: 20px; margin-top: 50px; padding: 10px 15px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Edit</button>
+                      <!--    <button style="margin-left: 20px; margin-top: 50px; padding: 10px 15px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer;" onClick="openUpdateForm()">Edit</button>-->
                         <button style="margin-left: 20px; margin-top: 50px; padding: 10px 15px; background-color: #f06a41; color: #fff; border: none; border-radius: 5px; cursor: pointer;" onClick="delLink('${link.lid}')">Delete</button>
                     </div>
                 </c:forEach>

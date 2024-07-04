@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Short.Link| Error</title>
+<title>Short | Error</title>
 </head>
 <body>
 <h1>Error 601 : Link Not Found</h1>
